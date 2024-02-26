@@ -13,14 +13,18 @@ class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         quick, slow = head, head
 
-        # 判断两个指针碰撞的条件
+        # 判断两个指针碰撞的条件 一定是首先考虑quick本身和quick的next，因为一次跳两个格子
+
+        # 这块总结出来的经验就是 如果head开头 那么我们就要关注本身而不是从next开始
         while quick is not None and quick.next is not None:
+            # slow迭代一个格子 quick迭代两个
             slow = slow.next
             quick = quick.next.next
 
             if quick == slow:
                 slow = head
-
+                # 此刻两个指针重合的地方到环的交点，与从head出发到环的交点，距离是一样的
+                # 所以只需要判断出来他俩什么时候相交就可以了
                 while slow != quick:
                     slow = slow.next
                     quick = quick.next
