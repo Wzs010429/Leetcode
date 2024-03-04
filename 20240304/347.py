@@ -23,3 +23,35 @@ class Solution:
         # 取前k个元素的键
         top_k = [item[0] for item in sorted_items[:k]]
         return top_k
+
+
+
+
+# 第二种方法 使用小顶堆
+
+import heapq
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # 要统计元素出现频率
+        map_ = dict()  # nums[i]:对应出现的次数
+        for i in range(len(nums)):
+            map_[nums[i]] = map_.get(nums[i], 0) + 1
+
+        # 对频率排序
+        # 定义一个小顶堆，大小为k
+        pri_que = []  # 小顶堆
+
+        for key, freq in map_.items():
+            heapq.heappush(pri_que, (freq, key))
+            if len(pri_que) > k:
+                heapq.heappop(pri_que)
+
+        res = []
+        for _ in range(k):
+            res.append(heapq.heappop(pri_que)[1])
+
+        # res = list(reversed(res))
+        res.reverse()
+
+        return res
